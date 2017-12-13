@@ -9,6 +9,6 @@ Features:
  * Very **quick** & lightweight (**39.6 kB** with jQuery + PureCSS)
 
 <br>
-[Demo (Turkish)](https://cagriari.com/puhutv.html)
+Demo: https://cagriari.com/puhutv.html
 <br>
 This repository, code or the demo website is not affiliated with PuhuTV.
