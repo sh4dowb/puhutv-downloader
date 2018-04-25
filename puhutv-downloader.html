@@ -17,7 +17,9 @@
          <div id="videos"></div>
          <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
          <script>
+            var hmacTries = 0;
             $("#download").click(function(){
+               hmacTries = 0;
                $(this).attr("disabled","disabled");
                $("#videos").text("");
                $("#log").text("");
@@ -30,7 +32,7 @@
                      $("#log").append("Episode ID: "+episode_id+"<br>");
                      if(!$.isNumeric(episode_id))
                      {
-                        $("#log").append("Error: Invalid episode ID. Please try again.<br>");
+                        $("#log").append("<font color=\"red\">Error: Invalid episode ID. Please try again.</font><br>");
                         $("#download").removeAttr("disabled");
                         return;
                      }
@@ -39,7 +41,7 @@
                      retryHmac(episode_id, true);
                   },
                   error: function(){
-                     $("#log").append("Error: Can't get episode ID. Please try again.<br>");
+                     $("#log").append("<font color=\"red\">Error: Can't get episode ID. Please try again.</font><br>");
                      $("#download").removeAttr("disabled");
                   }
                });
@@ -48,7 +50,11 @@
             function retryHmac(episode_id, first){
                 setTimeout(function(){
                    if(getvideos(episode_id)){
-                       $("#log").append("HMAC video link found, fetching again..<br>");
+                       if(hmacTries > 20){
+                          $("#log").append("<font color=\"red\">Maximum retry count exceeded. Please try again.</font><br>");
+                       }
+                       $("#log").append("HMAC video link found, retrying..<br>");
+                       hmacTries++;
                        retryHmac(episode_id, false);
                    }
                 }, (first ? 10 : 100));
