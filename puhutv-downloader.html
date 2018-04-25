@@ -18,7 +18,8 @@
          <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
          <script>
             var hmacTries = 0;
-            $("#download").click(function(){
+            $("#download").click(function(e){
+               e.preventDefault();
                hmacTries = 0;
                $(this).attr("disabled","disabled");
                $("#videos").text("");
@@ -40,7 +41,7 @@
                      $("#log").append("Fetching video list..<br>");
                      retryHmac(episode_id, true);
                   },
-                  error: function(){
+                  error: function(xhr, status, error){
                      $("#log").append("<font color=\"red\">Error: Can't get episode ID. Please try again.</font><br>");
                      $("#download").removeAttr("disabled");
                   }
