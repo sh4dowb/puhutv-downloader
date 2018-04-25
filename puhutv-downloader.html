@@ -86,7 +86,7 @@
                      $("#download").removeAttr("disabled");
                   },
                   error: function(){
-                     alert("Error: Can't get video list. Please try again.");
+                     $("#log").append("<font color=\"red\">Error: Can't get video list. Please try again.</font><br>");
                      $("#download").removeAttr("disabled");
                   }
                });
