@@ -9,7 +9,7 @@
    <body>
       <center>
          <form method="post" class="pure-form">
-            PuhuTV Episode Link:<br><input type="text" id="link" placeholder="https://puhutv.com/cember-7-bolum-hayalet-gemi-izle" style="height:40px;width:400px;"><br>
+            PuhuTV Episode Link: <br><input type="text" id="link" placeholder="https://puhutv.com/cember-7-bolum-hayalet-gemi-izle" style="height:40px;width:400px;"><br>
             <button id="download" type="submit" class="pure-button pure-input-1-2 pure-button-primary" style="width:100px;">Download</button>
          </form>
          <br>
@@ -22,9 +22,6 @@
                $("#videos").text("");
                $("#log").text("");
                $("#log").append("Fetching episode ID..<br>");
-               $.ajax({
-                  url: $("#link").val()
-               });
                $.ajax({
                   url: $("#link").val().replace("puhutv.com/", "puhutv.com/api/slug/"),
                   dataType: "json",
