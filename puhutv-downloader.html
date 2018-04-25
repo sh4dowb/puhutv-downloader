@@ -30,29 +30,32 @@
                      $("#log").append("Episode ID: "+episode_id+"<br>");
                      if(!$.isNumeric(episode_id))
                      {
-                        alert("Error: Invalid episode ID. Please try again.");
+                        $("#log").append("Error: Invalid episode ID. Please try again.<br>");
                         $("#download").removeAttr("disabled");
                         return;
                      }
-                     
-                     for(var i = 0;i < 10;i++)
-                     {
-                        if(getvideos(episode_id))
-                           $("#log").append("HMAC video link found, fetching again..<br>");
-                        else
-                           break
-                     }
+
+                     $("#log").append("Fetching video list..<br>");
+                     retryHmac(episode_id, true);
                   },
                   error: function(){
-                     alert("Error: Can't get episode ID. Please try again.");
+                     $("#log").append("Error: Can't get episode ID. Please try again.<br>");
                      $("#download").removeAttr("disabled");
                   }
                });
             });
-            
+
+            function retryHmac(episode_id, first){
+                setTimeout(function(){
+                   if(getvideos(episode_id)){
+                       $("#log").append("HMAC video link found, fetching again..<br>");
+                       retryHmac(episode_id, false);
+                   }
+                }, (first ? 10 : 100));
+            }
+
             function getvideos(episode_id){
                var hmac = false;
-               $("#log").append("Fetching video list..<br>");
                $.ajax({
                   url: "https://puhutv.com/api/assets/"+episode_id+"/videos",
                   dataType: "json",
