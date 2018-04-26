@@ -4,12 +4,12 @@
       <style>*{font-family:Arial;}a{text-decoration:none;}</style>
       <link rel="stylesheet" href="https://unpkg.com/purecss@0.6.2/build/forms-min.css">
       <link rel="stylesheet" href="https://unpkg.com/purecss@0.6.2/build/buttons-min.css">
-      <title>PuhuTV Downloader</title>
+      <title>puhutv Downloader</title>
    </head>
    <body>
       <center>
          <form method="post" class="pure-form">
-            PuhuTV Episode Link: <br><input type="text" id="link" placeholder="https://puhutv.com/cember-7-bolum-hayalet-gemi-izle" style="height:40px;width:400px;"><br>
+            puhutv Episode Link: <br><input type="text" id="link" placeholder="https://puhutv.com/cember-7-bolum-hayalet-gemi-izle" style="height:40px;width:400px;"><br>
             <button id="download" type="submit" class="pure-button pure-input-1-2 pure-button-primary" style="width:100px;">Download</button>
          </form>
          <br>
@@ -24,7 +24,7 @@
                $(this).attr("disabled","disabled");
                $("#videos").text("");
                $("#log").text("");
-               $("#log").append("Fetching episode ID..<br>");
+               $("#log").append("Fetching episode ID...<br>");
                $.ajax({
                   url: $("#link").val().replace("puhutv.com/", "puhutv.com/api/slug/"),
                   dataType: "json",
@@ -38,7 +38,7 @@
                         return;
                      }
 
-                     $("#log").append("Fetching video list..<br>");
+                     $("#log").append("Fetching video list...<br>");
                      retryHmac(episode_id, true);
                   },
                   error: function(xhr, status, error){
@@ -54,7 +54,7 @@
                        if(hmacTries > 20){
                           $("#log").append("<font color=\"red\">Maximum retry count exceeded. Please try again.</font><br>");
                        }
-                       $("#log").append("HMAC video link found, retrying..<br>");
+                       $("#log").append("HMAC video link found, retrying...<br>");
                        hmacTries++;
                        retryHmac(episode_id, false);
                    }
@@ -86,7 +86,7 @@
                      $("#download").removeAttr("disabled");
                   },
                   error: function(){
-                     $("#log").append("<font color=\"red\">Error: Can't get video list. Please try again.</font><br>");
+                     $("#log").append("<font color=\"red\">Error: Can't get video list. Please try again later.</font><br>");
                      $("#download").removeAttr("disabled");
                   }
                });
