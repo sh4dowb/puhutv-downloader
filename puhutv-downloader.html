@@ -14,13 +14,12 @@
          </form>
          <br>
          <p id="log" style="font-size:70%;"></p>
-         <div id="videos"></div>
+         <div id="videos"></div><br>
+	Note: after new puhutv update, you can't do "right click -> save as" anymore.<br>First, click on link, and after the redirect, you can download.
          <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
          <script>
-            var hmacTries = 0;
             $("#download").click(function(e){
                e.preventDefault();
-               hmacTries = 0;
                $(this).attr("disabled","disabled");
                $("#videos").text("");
                $("#log").text("");
@@ -39,7 +38,7 @@
                      }
 
                      $("#log").append("Fetching video list...<br>");
-                     retryHmac(episode_id, true);
+                     getvideos(episode_id);
                   },
                   error: function(xhr, status, error){
                      $("#log").append("<font color=\"red\">Error: Can't get episode ID. Please try again.</font><br>");
@@ -47,42 +46,41 @@
                   }
                });
             });
-
-            function retryHmac(episode_id, first){
-                setTimeout(function(){
-                   if(getvideos(episode_id)){
-                       if(hmacTries > 20){
-                          $("#log").append("<font color=\"red\">Maximum retry count exceeded. Please try again.</font><br>");
-                       }
-                       $("#log").append("HMAC video link found, retrying...<br>");
-                       hmacTries++;
-                       retryHmac(episode_id, false);
-                   }
-                }, (first ? 10 : 100));
-            }
-
+            var replacequalities = {"720p": "<b>720p</b>", "1080p": "<b>1080p</b>", "1440p": '<b style="color:limegreen;">1440p</b>', "2160p": '<b style="color:limegreen;">2160p</b>'};
             function getvideos(episode_id){
-               var hmac = false;
                $.ajax({
-                  url: "https://puhutv.com/api/assets/"+episode_id+"/videos",
+                  url: "https://galadriel.puhutv.com/assets/"+episode_id+"/videos",
                   dataType: "json",
-                  async: false,
+                  headers: {'x-platform': 'fotv-web-0'},
+                  async: true,
                   success: function(data){
-                     var videos = data.data.videos;
-                     for(var vidi in videos)
+                     var sources = data.sources;
+                     var videos = [];
+                     for(var i in sources)
                      {
-                        var vid = videos[vidi];
-                        if(vid.url.indexOf("hmac") !== -1)
+                        var source = sources[i];
+                        if(source['type'] == "video/mp4")
                         {
-                           hmac = true;
-                           return;
-                        }
-                        if(vid.url.indexOf("/mp4/") !== -1)
-                        {
-                           var quality = vid.url.split('/mp4/')[1].split('.mp4')[0];
-                           $("#videos").append('<a href="'+vid.url+'" target="_blank">'+ quality.replace('1080p', '<b>1080p</b>').replace('720p','<b>720p</b>').replace('1440p', '<b style="color:limegreen;">1440p</b>').replace('2160p', '<b style="color:limegreen;">2160p</b>') +'</a><br>');
+                           videos.push(["https://hidemyreferrer.com/go/?" + source.src, source.quality]);
                         }
                      }
+                    videos.sort(function(x, y) {
+                      if (x[1] < y[1]) {
+                        return 1;
+                      }
+                      if (x[1] > y[1]) {
+                        return -1;
+                      }
+                      return 0;
+                    });
+                    for(var i in videos){
+                      var video = videos[i];
+                      var qualityfixed = video[1].toString() + "p";
+                      if(qualityfixed in replacequalities)
+                        qualityfixed = replacequalities[qualityfixed];
+                      $("#videos").append('<a href="'+video[0]+'" target="_blank">'+ qualityfixed +'</a><br>');
+                    }
+
                      $("#download").removeAttr("disabled");
                   },
                   error: function(){
@@ -90,9 +88,9 @@
                      $("#download").removeAttr("disabled");
                   }
                });
-               return hmac;
             }
          </script>
       </center>
    </body>
 </html>
+
