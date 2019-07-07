@@ -1,96 +1,96 @@
 <html>
-   <head>
-      <meta charset="UTF-8">
-      <style>*{font-family:Arial;}a{text-decoration:none;}</style>
-      <link rel="stylesheet" href="https://unpkg.com/purecss@0.6.2/build/forms-min.css">
-      <link rel="stylesheet" href="https://unpkg.com/purecss@0.6.2/build/buttons-min.css">
-      <title>puhutv Downloader</title>
-   </head>
-   <body>
-      <center>
-         <form method="post" class="pure-form">
-            puhutv Episode Link: <br><input type="text" id="link" placeholder="https://puhutv.com/cember-7-bolum-hayalet-gemi-izle" style="height:40px;width:400px;"><br>
-            <button id="download" type="submit" class="pure-button pure-input-1-2 pure-button-primary" style="width:100px;">Download</button>
-         </form>
-         <br>
-         <p id="log" style="font-size:70%;"></p>
-         <div id="videos"></div><br>
-	Note: after new puhutv update, you can't do "right click -> save as" anymore.<br>First, click on link, and after the redirect, you can download.
-         <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-         <script>
-            $("#download").click(function(e){
-               e.preventDefault();
-               $(this).attr("disabled","disabled");
-               $("#videos").text("");
-               $("#log").text("");
-               $("#log").append("Fetching episode ID...<br>");
-               $.ajax({
-                  url: $("#link").val().replace("puhutv.com/", "puhutv.com/api/slug/"),
-                  dataType: "json",
-                  success: function(data){
-                     var episode_id = data.data.id;
-                     $("#log").append("Episode ID: "+episode_id+"<br>");
-                     if(!$.isNumeric(episode_id))
-                     {
-                        $("#log").append("<font color=\"red\">Error: Invalid episode ID. Please try again.</font><br>");
-                        $("#download").removeAttr("disabled");
-                        return;
-                     }
+<head>
+  <meta charset="UTF-8">
+  <style>*{font-family:Arial;}a{text-decoration:none;}</style>
+  <link rel="stylesheet" href="https://unpkg.com/purecss@0.6.2/build/forms-min.css">
+  <link rel="stylesheet" href="https://unpkg.com/purecss@0.6.2/build/buttons-min.css">
+  <title>puhutv indirici</title>
+</head>
+<body>
+  <a href="https://github.com/sh4dowb/puhutv-downloader"><img style="position: absolute; top: 0; left: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_left_red_aa0000.png" alt="Fork me on GitHub"></a>
+  <center>
+    <form method="post" class="pure-form">
+      puhutv bölüm link: <br><input type="text" id="link" placeholder="https://puhutv.com/cember-7-bolum-hayalet-gemi-izle" style="height:40px;width:400px;"><br>
+      <button id="download" type="submit" class="pure-button pure-input-1-2 pure-button-primary" style="width:100px;">indir</button>
+    </form>
+    <br>
+    <p id="log" style="font-size:70%;"></p>
+    <div id="videos"></div><br>
+    yeni güncelleme yüzünden "sağ tık -> farklı kaydet" mümkün değil.<br>lütfen önce linke tıklayın, yönlendirmeden sonra ctrl-s veya sağ tık yaparak kaydedin.
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script>
+      $("#download").click(function(e){
+       e.preventDefault();
+       $(this).attr("disabled","disabled");
+       $("#videos").text("");
+       $("#log").text("");
+       $("#log").append("bölüm ID alınıyor...<br>");
+       $.ajax({
+        url: $("#link").val(),
+        success: function(data){
+         var episode_id = data.split('data-asset-id="')[1].split('"')[0];
+         $("#log").append("bölüm ID: "+episode_id+"<br>");
+         if(!$.isNumeric(episode_id))
+         {
+          $("#log").append("<font color=\"red\">hata: bölüm ID alınamadı. lütfen tekrar deneyin.</font><br>");
+          $("#download").removeAttr("disabled");
+          return;
+        }
 
-                     $("#log").append("Fetching video list...<br>");
-                     getvideos(episode_id);
-                  },
-                  error: function(xhr, status, error){
-                     $("#log").append("<font color=\"red\">Error: Can't get episode ID. Please try again.</font><br>");
-                     $("#download").removeAttr("disabled");
-                  }
-               });
-            });
-            var replacequalities = {"720p": "<b>720p</b>", "1080p": "<b>1080p</b>", "1440p": '<b style="color:limegreen;">1440p</b>', "2160p": '<b style="color:limegreen;">2160p</b>'};
-            function getvideos(episode_id){
-               $.ajax({
-                  url: "https://galadriel.puhutv.com/assets/"+episode_id+"/videos",
-                  dataType: "json",
-                  headers: {'x-platform': 'fotv-web-0'},
-                  async: true,
-                  success: function(data){
-                     var sources = data.sources;
-                     var videos = [];
-                     for(var i in sources)
-                     {
-                        var source = sources[i];
-                        if(source['type'] == "video/mp4")
-                        {
-                           videos.push(["https://cagriari.com/referer.php?to=" + source.src, source.quality]);
-                        }
-                     }
-                    videos.sort(function(x, y) {
-                      if (x[1] < y[1]) {
-                        return 1;
-                      }
-                      if (x[1] > y[1]) {
-                        return -1;
-                      }
-                      return 0;
-                    });
-                    for(var i in videos){
-                      var video = videos[i];
-                      var qualityfixed = video[1].toString() + "p";
-                      if(qualityfixed in replacequalities)
-                        qualityfixed = replacequalities[qualityfixed];
-                      $("#videos").append('<a href="'+video[0]+'" target="_blank">'+ qualityfixed +'</a><br>');
-                    }
+        $("#log").append("Video listesi alınıyor...<br>");
+        getvideos(episode_id);
+      },
+      error: function(xhr, status, error){
+       $("#log").append("<font color=\"red\">hata: bölüm ID alınamadı. lütfen tekrar deneyin.</font><br>");
+       $("#download").removeAttr("disabled");
+     }
+   });
+     });
+      var replacequalities = {"720p": "<b>720p</b>", "1080p": "<b>1080p</b>", "1440p": '<b style="color:limegreen;">1440p</b>', "2160p": '<b style="color:limegreen;">2160p</b>'};
+      function getvideos(episode_id){
+       $.ajax({
+        url: "https://puhutv.com/api/assets/"+episode_id+"/videos",
+        dataType: "json",
+        headers: {'x-platform': 'fotv-web-0'},
+        async: true,
+        success: function(data){
+         var sources = data.data.videos;
+         var videos = [];
+         for(var i in sources)
+         {
+          var source = sources[i];
+          if(source['video_format'] == "mp4")
+          {
+           var realsrc = source.url.split('/mp4/')[0] + "/mp4/" + source.quality.toString() + "p.mp4?" + source.url.split('.mp4?')[1];
+           videos.push(["https://cagriari.com/referer.php?to=" + realsrc, source.quality]);
+         }
+       }
+       videos.sort(function(x, y) {
+        if (x[1] < y[1]) {
+          return 1;
+        }
+        if (x[1] > y[1]) {
+          return -1;
+        }
+        return 0;
+      });
+       for(var i in videos){
+        var video = videos[i];
+        var qualityfixed = video[1].toString() + "p";
+        if(qualityfixed in replacequalities)
+          qualityfixed = replacequalities[qualityfixed];
+        $("#videos").append('<a href="'+video[0]+'" target="_blank">'+ qualityfixed +'</a><br>');
+      }
 
-                     $("#download").removeAttr("disabled");
-                  },
-                  error: function(){
-                     $("#log").append("<font color=\"red\">Error: Can't get video list. Please try again.</font><br>");
-                     $("#download").removeAttr("disabled");
-                  }
-               });
-            }
-         </script>
-      </center>
-   </body>
+      $("#download").removeAttr("disabled");
+    },
+    error: function(){
+     $("#log").append("<font color=\"red\">hata: video listesi alınamadı, lütfen tekrar deneyin.</font><br>");
+     $("#download").removeAttr("disabled");
+   }
+ });
+     }
+   </script>
+ </center>
+</body>
 </html>
-
