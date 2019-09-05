@@ -12,5 +12,5 @@
 https://cagriari.com/puhutv.html
 
 ## Notice
-This repository, code or the demo website is not affiliated with puhutv.
+This repository, code or the demo website is not affiliated with puhutv.<br>
 Bu projenin, kodun, veya sitenin PuhuTV ile herhangi bir bağı yoktur, bağımsızdır
