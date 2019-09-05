@@ -1,4 +1,4 @@
-# puhutv Downloader - NOT WORKING
+# puhutv Downloader
 
 ## Features
 
@@ -13,3 +13,4 @@ https://cagriari.com/puhutv.html
 
 ## Notice
 This repository, code or the demo website is not affiliated with puhutv.
+Bu projenin, kodun, veya sitenin PuhuTV ile herhangi bir bağı yoktur, bağımsızdır
