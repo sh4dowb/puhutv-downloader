@@ -1,25 +1,25 @@
 <html>
 <head>
-<meta charset="UTF-8">
-<style>*{font-family:Arial;}a{text-decoration:none;}</style>
-<link rel="stylesheet" href="https://unpkg.com/purecss@0.6.2/build/forms-min.css">
-<link rel="stylesheet" href="https://unpkg.com/purecss@0.6.2/build/buttons-min.css">
-<title>puhutv indirici</title>
+  <meta charset="UTF-8">
+  <style>*{font-family:Arial;}a{text-decoration:none;}</style>
+  <link rel="stylesheet" href="https://unpkg.com/purecss@0.6.2/build/forms-min.css">
+  <link rel="stylesheet" href="https://unpkg.com/purecss@0.6.2/build/buttons-min.css">
+  <title>puhutv indirici</title>
 </head>
 <body>
-<a target="_blank" href="https://github.com/sh4dowb/puhutv-downloader"><img style="position: absolute; top: 0; left: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_left_red_aa0000.png" alt="Fork me on GitHub"></a>
-<center>
-<form method="post" class="pure-form"><b>tekrardan çalışıyor!</b><br><br>
-puhutv bölüm link: <br><input type="text" id="link" placeholder="https://puhutv.com/cember-7-bolum-hayalet-gemi-izle" style="height:40px;width:400px;"><br>
-<button id="download" type="submit" class="pure-button pure-input-1-2 pure-button-primary" style="width:100px;">indir</button>
-</form>
-<br>
-<p id="log" style="font-size:70%;"></p>
-<div id="videos"></div><br>
-<span>not: VPN kullanıyorsanız videolar açılmayabilir.<br>not 2: tüm kaliteler (örn. 2160p) var olmayabilir.</span>
-
-<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-<script>
+  <a target="_blank" href="https://github.com/sh4dowb/puhutv-downloader"><img style="position: absolute; top: 0; left: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_left_red_aa0000.png" alt="Fork me on GitHub"></a>
+  <center>
+    <form method="post" class="pure-form"><b>tekrardan çalışıyor!</b><br><br>
+      puhutv bölüm <b>izleme</b> linki: <br><input type="text" id="link" placeholder="https://puhutv.com/cember-7-bolum-hayalet-gemi-izle" style="height:40px;width:400px;"><br>
+      <button id="download" type="submit" class="pure-button pure-input-1-2 pure-button-primary" style="width:100px;">indir</button>
+    </form>
+    <br>
+    <p id="log" style="font-size:70%;"></p>
+    <div id="videos"></div><br>
+    <span>not: VPN kullanıyorsanız videolar açılmayabilir.<br>not 2: tüm kaliteler (örn. 2160p) var olmayabilir.</span>
+    <!-- <span style="display:hidden;">yeni güncelleme yüzünden "sağ tık -> farklı kaydet" mümkün değil.<br>lütfen önce linke tıklayın, yönlendirmeden sonra ctrl-s veya sağ tık yaparak kaydedin.</span> -->
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script>
       $("#download").click(function(e){
        e.preventDefault();
        $(this).attr("disabled","disabled");
@@ -27,7 +27,7 @@ puhutv bölüm link: <br><input type="text" id="link" placeholder="https://puhut
        $("#log").text("");
        $("#log").append("bölüm ID alınıyor...<br>");
        $.ajax({
-        url: $("#link").val(),
+        url: $("#link").val().replace('-detay','-izle'),
         success: function(data){
 	console.log(data.split("player.video.loader(")[1].split("', '"));
          var episode_id = data.split("player.video.loader(")[1].split("', '")[1];
@@ -86,6 +86,6 @@ puhutv bölüm link: <br><input type="text" id="link" placeholder="https://puhut
  });
      }
    </script>
-</center>
+ </center>
 </body>
 </html>
