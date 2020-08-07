@@ -1,5 +1,7 @@
 # puhutv Downloader
 
+# no more maintained
+
 ## Features
 
  * Filters **MP4** files, doesn't show M3U8 playlists
